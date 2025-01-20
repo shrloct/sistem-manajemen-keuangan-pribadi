@@ -2,10 +2,10 @@
   "name": "finance-app",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
-  "start": "node src/app.js",
-  "dev": "nodemon src/app.js"
-},
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
