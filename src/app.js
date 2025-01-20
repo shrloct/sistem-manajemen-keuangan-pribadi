@@ -14,11 +14,11 @@ app.use(express.json());
 
 // Import rute API
 const userRoutes = require('./routes/userRoutes');
-// const financeRoutes = require('./routes/financeRoutes');
+const financeRoutes = require('./routes/financeRoutes');
 
 // Gunakan rute API
 app.use('/api/users', userRoutes);
-// app.use('/api/finance', financeRoutes);
+app.use('/api/finance', financeRoutes);
 
 // Port aplikasi
 const PORT = process.env.PORT || 5000;
