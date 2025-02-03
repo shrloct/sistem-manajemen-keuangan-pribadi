@@ -1,22 +1,25 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require("../middleware/authMiddleware");
 const {
+  getCategoryStats,
   getFinances,
   createFinance,
   updateFinance,
   deleteFinance,
   getFinanceReport,
-} = require('../controllers/financeController');
+} = require("../controllers/financeController");
 
-router.get('/', protect, getFinances);
+router.get("/", protect, getFinances);
 
-router.post('/', protect, createFinance);
+router.post("/", protect, createFinance);
 
-router.put('/:id', protect, updateFinance);
+router.put("/:id", protect, updateFinance);
 
-router.delete('/:id', protect, deleteFinance);
+router.delete("/:id", protect, deleteFinance);
 
-router.get('/report', protect, getFinanceReport);
+router.get("/report", protect, getFinanceReport);
+
+router.get("/category-stats", protect, getCategoryStats);
 
 module.exports = router;
