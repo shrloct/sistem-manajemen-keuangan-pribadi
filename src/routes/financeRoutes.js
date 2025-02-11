@@ -11,6 +11,7 @@ const {
   getFinanceReport,
   getMonthlyStats,
   filterFinance,
+  getFinanceReportByPeriod,
 } = require("../controllers/financeController");
 
 router.get("/", protect, getFinances);
@@ -29,4 +30,5 @@ router.get("/monthly-stats", protect, getMonthlyStats);
 
 router.get("/filter", protect, filterFinance);
 
+router.get("/report", protect, getFinanceReportByPeriod);
 module.exports = router;
