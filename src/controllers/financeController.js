@@ -161,6 +161,52 @@ const getFinanceReport = async (req, res) => {
   }
 };
 
+// Fungsi untuk mendapatkan statistik bulanan
+const getMonthlyStats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { year } = req.query;
+
+    if (!year) {
+      return res
+        .status(400)
+        .json({ message: "Tahun harus disertakan dalam query parameter." });
+    }
+
+    // Filter data berdasarkan tahun
+    const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endOfYear = new Date(`${Number(year) + 1}-01-01T00:00:00.000Z`);
+
+    const finances = await Finance.find({
+      user: userId,
+      createdAt: { $gte: startOfYear, $lt: endOfYear },
+    });
+
+    // Hitung statistik bulanan
+    const monthlyStats = Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      totalIncome: 0,
+      totalExpense: 0,
+      balance: 0,
+    }));
+
+    finances.forEach((item) => {
+      const monthIndex = item.createdAt.getUTCMonth(); // bulan (0-11)
+      if (item.type === "income") {
+        monthlyStats[monthIndex].totalIncome += item.amount;
+      } else if (item.type === "expense") {
+        monthlyStats[monthIndex].totalExpense += item.amount;
+      }
+      monthlyStats[monthIndex].balance =
+        monthlyStats[monthIndex].totalIncome -
+        monthlyStats[monthIndex].totalExpense;
+    });
+
+    res.status(200).json(monthlyStats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   getCategoryStats,
   getFinances,
@@ -168,4 +214,5 @@ module.exports = {
   updateFinance,
   deleteFinance,
   getFinanceReport,
+  getMonthlyStats,
 };
